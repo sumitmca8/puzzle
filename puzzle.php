@@ -5,7 +5,7 @@ class Puzzle{
 	private $listOfWine;
 	private $personWineWishlist;
 	private	$wineAllotmentList;
-    private	$totalWineSold;
+        private	$totalWineSold;
 	
 	/**
      * Constructor 
@@ -49,12 +49,12 @@ class Puzzle{
 		foreach ($this->listOfWine as $key => $wineCode){
 		    foreach ($this->personWineWishlist[$wineCode] as $keys => $personCode){
 		      	if(!array_key_exists($personCode, $this->wineAllotmentList)){
-					$this->wineAllotmentList[$personCode][] = $wineCode;
+					$this->wineAllotmentList[trim($personCode)][] = $wineCode;
 					$this->totalWineSold++;
 					break;
 			   	}else{
 					if(count($this->wineAllotmentList[$personCode])<3){
-						$this->wineAllotmentList[$personCode][] = $wineCode;
+						$this->wineAllotmentList[trim($personCode)][] = $wineCode;
 						$this->totalWineSold++;
 						break;
 					}
@@ -76,7 +76,7 @@ class Puzzle{
 	    fwrite($file, $heading );
 
 	    ksort($this->wineAllotmentList);
-	    foreach (array_keys($this->wineAllotmentList) as $personCode=>$winelist){
+	    foreach ($this->wineAllotmentList as $personCode=>$winelist){
 			foreach ($this->wineAllotmentList[$personCode] as $key => $wineCode){
 				fwrite($file, "\n".$personCode." \t ".$wineCode);
 			}
@@ -86,5 +86,5 @@ class Puzzle{
 }
 
 $wine = new Puzzle;
-$wine->generateWineList("https://s3.amazonaws.com/br-user/puzzles/person_wine_3.txt");
+$wine->generateWineList("person_wine_3.txt");
 $wine->exportWineAllotList('puzzle_output.txt');
